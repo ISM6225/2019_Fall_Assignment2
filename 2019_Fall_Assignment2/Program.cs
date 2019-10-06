@@ -11,8 +11,10 @@ namespace _2019_Fall_Assignment2
             int[] nums = { 1, 3, 5, 6 };
             Console.WriteLine("Position to insert {0} is = {1}\n", target, SearchInsert(nums, target));
 
-            int[] nums1 = { 1, 2, 2, 1 };
-            int[] nums2 = { 2, 2 };
+            //int[] nums1 = { 2, 5, 5, 2 };
+            int[] nums1 = { 3, 6, 2 };
+            //int[] nums2 = { 5,5 };
+            int[] nums2 = { 6, 3, 6, 7, 3 };
             int[] intersect = Intersect(nums1, nums2);
             Console.WriteLine("Intersection of two arrays is: ");
             DisplayArray(intersect);
@@ -78,10 +80,11 @@ namespace _2019_Fall_Assignment2
             {
                 //use binary search
                 int start = 0, end = nums.Length;
-                int mid;
+                int exp=1;
                 while (start <= end)
                 {
-                    mid = start + (end - start) / 2;
+                    int mid = start + (end - start) / 2;
+                    exp = mid;
 
                     if (nums[mid] == target)
                     {
@@ -100,9 +103,10 @@ namespace _2019_Fall_Assignment2
 
                 }
 
-                return -1;
+                return exp;
 
             }
+            
             catch
             {
                 Console.WriteLine("Exception occured while computing SearchInsert()");
@@ -119,7 +123,19 @@ namespace _2019_Fall_Assignment2
                 Dictionary<int, int> n1 = new Dictionary<int, int>();
                 Dictionary<int, int> n2 = new Dictionary<int, int>();
 
-                int[] output = new int[nums1.Length];
+                // check which array is longest
+                int arrayLength; 
+                if(nums1.Length > nums2.Length)
+                {
+                    arrayLength = nums2.Length;
+                }
+                else
+                {
+                    arrayLength = nums1.Length;
+                }
+                
+
+                int[] output = new int[arrayLength];
 
                 for (int i = 0; i < nums1.Length; i++)
                 {
@@ -130,7 +146,18 @@ namespace _2019_Fall_Assignment2
                     n2.Add(j, nums2[j]);
                 }
 
+                int index = 0;
+                foreach (KeyValuePair<int, int> item in n1)
+                {
+                    if (n2.ContainsValue(item.Value) && index < arrayLength)
+                    {
+                        output[index] = item.Value;
+                        n2.Remove(item.Key);
+                        ++index;
+                    }
+                }
 
+                return output;
             }
             catch
             {
