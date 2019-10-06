@@ -7,7 +7,7 @@ namespace _2019_Fall_Assignment2
     {
         public static void Main(string[] args)
         {
-            int target = 7;
+            int target =5;
             int[] nums = { 1, 3, 5, 6 };
             Console.WriteLine("Position to insert {0} is = {1}\n", target, SearchInsert(nums, target));
 
@@ -79,32 +79,40 @@ namespace _2019_Fall_Assignment2
             try
             {
                 //use binary search
-                int start = 0, end = nums.Length;
-                int exp=1;
-                while (start <= end)
+                int start = 0, end = nums.Length -1,
+                    index = start + (end - start) / 2;
+
+                if (target > nums[nums.Length - 1])
                 {
-                    int mid = start + (end - start) / 2;
-                    exp = mid;
-
-                    if (nums[mid] == target)
-                    {
-                        return mid;
-                    }
-
-                    if (nums[mid] < target)
-                    {
-                        start = mid + 1;
-                    }
-                    else
-                    {
-                        end = mid - 1;
-                    }
-
-
+                    // target is greater than last element in array
+                    index = nums.Length;
                 }
+                else
+                {
+                    while (start < end)
+                    {
+                        int val = nums[index];
 
-                return exp;
+                        if (val == target)
+                        {
+                            return index;
+                            
+                        }
+                        else if (val < target)
+                        {
+                            //
+                            start = index + 1;
+                        }
+                        else
+                        {
+                            end = index - 1;
+                        }
 
+                        index = start + (end - start) / 2;
+                    }
+                }
+                return index;
+                
             }
             
             catch
@@ -112,7 +120,7 @@ namespace _2019_Fall_Assignment2
                 Console.WriteLine("Exception occured while computing SearchInsert()");
             }
 
-            return 0;
+            return -1;
         }
 
         public static int[] Intersect(int[] nums1, int[] nums2)
