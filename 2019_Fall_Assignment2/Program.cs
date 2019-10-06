@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _2019_Fall_Assignment2
 {
@@ -7,7 +8,7 @@ namespace _2019_Fall_Assignment2
     {
         public static void Main(string[] args)
         {
-            int target =5;
+            int target = 5;
             int[] nums = { 1, 3, 5, 6 };
             Console.WriteLine("Position to insert {0} is = {1}\n", target, SearchInsert(nums, target));
 
@@ -79,7 +80,7 @@ namespace _2019_Fall_Assignment2
             try
             {
                 //use binary search
-                int start = 0, end = nums.Length -1,
+                int start = 0, end = nums.Length - 1,
                     index = start + (end - start) / 2;
 
                 if (target > nums[nums.Length - 1])
@@ -96,7 +97,7 @@ namespace _2019_Fall_Assignment2
                         if (val == target)
                         {
                             return index;
-                            
+
                         }
                         else if (val < target)
                         {
@@ -112,9 +113,9 @@ namespace _2019_Fall_Assignment2
                     }
                 }
                 return index;
-                
+
             }
-            
+
             catch
             {
                 Console.WriteLine("Exception occured while computing SearchInsert()");
@@ -132,8 +133,8 @@ namespace _2019_Fall_Assignment2
                 Dictionary<int, int> n2 = new Dictionary<int, int>();
 
                 // check which array is longest
-                int arrayLength; 
-                if(nums1.Length > nums2.Length)
+                int arrayLength;
+                if (nums1.Length > nums2.Length)
                 {
                     arrayLength = nums2.Length;
                 }
@@ -141,7 +142,7 @@ namespace _2019_Fall_Assignment2
                 {
                     arrayLength = nums1.Length;
                 }
-                
+
 
                 int[] output = new int[arrayLength];
 
@@ -178,8 +179,24 @@ namespace _2019_Fall_Assignment2
         public static int LargestUniqueNumber(int[] A)
         {
             try
-            {
-                // Write your code here
+            {   //using dictionary to find out the larest unique number
+                Dictionary<int, int> dictionary = new Dictionary<int, int>();
+                int value;
+
+                //we run the for loop and select the first element 
+                for (int i = 0; i < A.Length - 1; i++)
+                {   //condition to check if there is common number in the array
+                    if (dictionary.TryGetValue(A[i], out value))
+                    {
+                        dictionary[A[i]]++;
+                    }
+
+                    else
+                    {
+                        dictionary.Add(A[i], 0);
+                    }
+                }
+                return dictionary.Where(pair => pair.Value == 0).Select(pair => pair.Key).Max();
             }
             catch
             {
@@ -193,7 +210,7 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+
             }
             catch
             {
@@ -208,16 +225,24 @@ namespace _2019_Fall_Assignment2
             try
             {
                 int[,] rev_flip = new int[A.GetLength(0), A.GetLength(1)];
+
                 for (int i = 0; i < A.GetLength(0); i++)
+
                 {
+
                     for (int j = 0; j < A.GetLength(1); j++)
+
                     {
+
                         rev_flip[i, j] = A[i, Math.Abs(j - A.GetLength(1) + 1)] ^ 1;
+
                     }
 
-                }
-                return rev_flip;
 
+
+                }
+
+                return rev_flip;
             }
             catch
             {
