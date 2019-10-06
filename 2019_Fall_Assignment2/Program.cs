@@ -274,7 +274,55 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+                int n = intervals.Length / 2;
+                int[] start = new int[n];
+                int[] end = new int[n];
+
+
+                for (int i = 0; i < n; i++)
+                {
+                    start[i] = intervals[i, 0];
+                }
+
+
+                for (int j = 0; j < n; j++)
+                {
+                    end[j] = intervals[j, 1];
+                }
+
+                //sort start and end time 
+                Array.Sort(start);
+                Array.Sort(end);
+
+
+
+                int room_needed = 1, result = 1;
+                int x = 1, y = 0;
+
+                while (x < n && y < n)
+                {
+
+                    // If next meeting in sorted order  
+                    // is started, increment count 
+                    // of room needed 
+                    if (start[x] <= end[y])
+                    {
+                        room_needed++;
+                        x++;
+
+                        // Update result if needed  
+                        if (room_needed > result)
+                            result = room_needed;
+                    }
+
+                    // Else decrement count of  
+                    // meeting needed 
+                    else
+                    {
+                        room_needed--;
+                        y++;
+                    }
+                }
             }
             catch
             {
