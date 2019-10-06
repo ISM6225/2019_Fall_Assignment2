@@ -207,7 +207,17 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+                int[,] rev_flip = new int[A.GetLength(0), A.GetLength(1)];
+                for (int i = 0; i < A.GetLength(0); i++)
+                {
+                    for (int j = 0; j < A.GetLength(1); j++)
+                    {
+                        rev_flip[i, j] = A[i, Math.Abs(j - A.GetLength(1) + 1)] ^ 1;
+                    }
+
+                }
+                return rev_flip;
+
             }
             catch
             {
