@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _2019_Fall_Assignment2
 {
@@ -178,11 +179,27 @@ namespace _2019_Fall_Assignment2
         public static int LargestUniqueNumber(int[] A)
         {
             try
-            {
-                // Write your code here
+            {   //using dictionary to find out the larest unique number
+                Dictionary<int, int> dictionary = new Dictionary<int, int>();
+                int value;
+
+                //we run the for loop and select the first element 
+                for (int i = 0; i < A.Length - 1; i++)
+                {   //condition to check if there is common number in the array
+                    if (dictionary.TryGetValue(A[i], out value))
+                    {
+                        dictionary[A[i]]++;
+                    }
+
+                    else
+                    {
+                        dictionary.Add(A[i], 0);
+                    }
+                }
+                return dictionary.Where(pair => pair.Value == 0).Select(pair => pair.Key).Max();
             }
             catch
-            {
+            {  
                 Console.WriteLine("Exception occured while computing LargestUniqueNumber()");
             }
 
@@ -193,7 +210,7 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+                
             }
             catch
             {
