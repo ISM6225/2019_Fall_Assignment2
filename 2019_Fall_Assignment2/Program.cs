@@ -209,8 +209,26 @@ namespace _2019_Fall_Assignment2
         public static int CalculateTime(string keyboard, string word)
         {
             try
-            {
+            {   //using dictionary to Calculate Time 
+                Dictionary<char, int> dictionary = new Dictionary<char, int>();
+                char[] Arraykey = keyboard.ToCharArray();
+                char[] Arrayword = word.ToCharArray();
+                int value, time;
+                //we run the for loop and select the first element
+                for (int i = 0; i < Arraykey.Length; i++)
+                {   //condition to check if there is no common number in the array
+                    if (!dictionary.TryGetValue(Arraykey[i], out value))
+                    {
+                        dictionary.Add(Arraykey[i], i);
+                    }
+                }
 
+                time = dictionary[Arrayword[0]];
+                for (int i = 0; i < Arrayword.Length - 1; i++)
+                {
+                    time =+ Math.Abs(dictionary[Arrayword[i]] - dictionary[Arrayword[i + 1]]);
+                }
+                return time;
             }
             catch
             {
