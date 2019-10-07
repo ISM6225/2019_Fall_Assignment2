@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _2019_Fall_Assignment2
 {
@@ -34,7 +35,6 @@ namespace _2019_Fall_Assignment2
             Console.Write("\n");
 
             int[,] intervals = { { 0, 30 }, { 5, 10 }, { 15, 20 } };
-            //int[,] intervals = { { 7, 10 }, { 2, 4 } };
             int minMeetingRooms = MinMeetingRooms(intervals);
             Console.WriteLine("Minimum meeting rooms needed = {0}\n", minMeetingRooms);
 
@@ -179,17 +179,24 @@ namespace _2019_Fall_Assignment2
         public static int LargestUniqueNumber(int[] A)
         {
             try
-            {
-                int max = getMax(A, A.Length);
-                Dictionary<int, int> largestNumber = new Dictionary<int, int>();
+            {   //using dictionary to find out the larest unique number
+                Dictionary<int, int> dictionary = new Dictionary<int, int>();
+                int value;
 
-                for (int i = 0; i < A.Length; i++)
-                {
-                    largestNumber.Add(i, A[i]);
+                //we run the for loop and select the first element 
+                for (int i = 0; i < A.Length - 1; i++)
+                {   //condition to check if there is common number in the array
+                    if (dictionary.TryGetValue(A[i], out value))
+                    {
+                        dictionary[A[i]]++;
+                    }
+
+                    else
+                    {
+                        dictionary.Add(A[i], 0);
+                    }
                 }
-
-
-
+                return dictionary.Where(pair => pair.Value == 0).Select(pair => pair.Key).Max();
             }
             catch
             {
@@ -202,8 +209,26 @@ namespace _2019_Fall_Assignment2
         public static int CalculateTime(string keyboard, string word)
         {
             try
-            {
-                // Write your code here
+            {   //using dictionary to Calculate Time 
+                Dictionary<char, int> dictionary = new Dictionary<char, int>();
+                char[] Arraykey = keyboard.ToCharArray();
+                char[] Arrayword = word.ToCharArray();
+                int value, time;
+                //we run the for loop and select the first element
+                for (int i = 0; i < Arraykey.Length; i++)
+                {   //condition to check if there is no common number in the array
+                    if (!dictionary.TryGetValue(Arraykey[i], out value))
+                    {
+                        dictionary.Add(Arraykey[i], i);
+                    }
+                }
+
+                time = dictionary[Arrayword[0]];
+                for (int i = 0; i < Arrayword.Length - 1; i++)
+                {
+                    time =+ Math.Abs(dictionary[Arrayword[i]] - dictionary[Arrayword[i + 1]]);
+                }
+                return time;
             }
             catch
             {
@@ -217,7 +242,25 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+                int[,] rev_flip = new int[A.GetLength(0), A.GetLength(1)];
+
+                for (int i = 0; i < A.GetLength(0); i++)
+
+                {
+
+                    for (int j = 0; j < A.GetLength(1); j++)
+
+                    {
+
+                        rev_flip[i, j] = A[i, Math.Abs(j - A.GetLength(1) + 1)] ^ 1;
+
+                    }
+
+
+
+                }
+
+                return rev_flip;
             }
             catch
             {
@@ -280,8 +323,6 @@ namespace _2019_Fall_Assignment2
                         y++;
                     }
                 }
-
-                return result;
             }
             catch
             {
