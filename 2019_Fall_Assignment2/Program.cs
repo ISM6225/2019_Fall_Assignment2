@@ -239,7 +239,7 @@ namespace _2019_Fall_Assignment2
         public static int[,] FlipAndInvertImage(int[,] A)
         {
             try
-            {
+            {   //Initiazing 2-d array
                 int[,] rev_flip = new int[A.GetLength(0), A.GetLength(1)];
 
                 for (int i = 0; i < A.GetLength(0); i++)
@@ -249,7 +249,7 @@ namespace _2019_Fall_Assignment2
                     for (int j = 0; j < A.GetLength(1); j++)
 
                     {
-
+                        // First flip the elements and then Invert the same
                         rev_flip[i, j] = A[i, Math.Abs(j - A.GetLength(1) + 1)] ^ 1;
 
                     }
