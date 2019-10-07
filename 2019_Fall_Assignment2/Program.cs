@@ -7,7 +7,7 @@ namespace _2019_Fall_Assignment2
     {
         public static void Main(string[] args)
         {
-            int target =5;
+            int target = 5;
             int[] nums = { 1, 3, 5, 6 };
             Console.WriteLine("Position to insert {0} is = {1}\n", target, SearchInsert(nums, target));
 
@@ -34,6 +34,7 @@ namespace _2019_Fall_Assignment2
             Console.Write("\n");
 
             int[,] intervals = { { 0, 30 }, { 5, 10 }, { 15, 20 } };
+            //int[,] intervals = { { 7, 10 }, { 2, 4 } };
             int minMeetingRooms = MinMeetingRooms(intervals);
             Console.WriteLine("Minimum meeting rooms needed = {0}\n", minMeetingRooms);
 
@@ -79,7 +80,7 @@ namespace _2019_Fall_Assignment2
             try
             {
                 //use binary search
-                int start = 0, end = nums.Length -1,
+                int start = 0, end = nums.Length - 1,
                     index = start + (end - start) / 2;
 
                 if (target > nums[nums.Length - 1])
@@ -96,7 +97,7 @@ namespace _2019_Fall_Assignment2
                         if (val == target)
                         {
                             return index;
-                            
+
                         }
                         else if (val < target)
                         {
@@ -112,9 +113,9 @@ namespace _2019_Fall_Assignment2
                     }
                 }
                 return index;
-                
+
             }
-            
+
             catch
             {
                 Console.WriteLine("Exception occured while computing SearchInsert()");
@@ -132,8 +133,8 @@ namespace _2019_Fall_Assignment2
                 Dictionary<int, int> n2 = new Dictionary<int, int>();
 
                 // check which array is longest
-                int arrayLength; 
-                if(nums1.Length > nums2.Length)
+                int arrayLength;
+                if (nums1.Length > nums2.Length)
                 {
                     arrayLength = nums2.Length;
                 }
@@ -141,7 +142,7 @@ namespace _2019_Fall_Assignment2
                 {
                     arrayLength = nums1.Length;
                 }
-                
+
 
                 int[] output = new int[arrayLength];
 
@@ -179,7 +180,16 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+                int max = getMax(A, A.Length);
+                Dictionary<int, int> largestNumber = new Dictionary<int, int>();
+
+                for (int i = 0; i < A.Length; i++)
+                {
+                    largestNumber.Add(i, A[i]);
+                }
+
+
+
             }
             catch
             {
@@ -221,7 +231,57 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                // Write your code here
+                int n = intervals.Length / 2;
+                int[] start = new int[n];
+                int[] end = new int[n];
+
+
+                for (int i = 0; i < n; i++)
+                {
+                    start[i] = intervals[i, 0];
+                }
+
+
+                for (int j = 0; j < n; j++)
+                {
+                    end[j] = intervals[j, 1];
+                }
+
+                //sort start and end time 
+                Array.Sort(start);
+                Array.Sort(end);
+
+
+
+                int room_needed = 1, result = 1;
+                int x = 1, y = 0;
+
+                while (x < n && y < n)
+                {
+
+                    // If next meeting in sorted order  
+                    // is started, increment count 
+                    // of room needed 
+                    if (start[x] <= end[y])
+                    {
+                        room_needed++;
+                        x++;
+
+                        // Update result if needed  
+                        if (room_needed > result)
+                            result = room_needed;
+                    }
+
+                    // Else decrement count of  
+                    // meeting needed 
+                    else
+                    {
+                        room_needed--;
+                        y++;
+                    }
+                }
+
+                return result;
             }
             catch
             {
@@ -255,16 +315,59 @@ namespace _2019_Fall_Assignment2
 
         public static bool ValidPalindrome(string s)
         {
+
             try
             {
-                // Write your code here
+                int check = 0;
+                //Console.Write("\n String is not a palindrome,lets check if the string can made Palindrome\n");
+                for (int i = 0; i < s.Length; i++)
+                {
+
+                    string sub_string = s.Remove(i, 1);
+                    if (isPalindrome(sub_string) == 0)
+                    {
+
+                        check = 1;
+                        break;
+                    }
+                }
+
+                if (check == 1)
+                    return true;
+                else
+                    return false;
             }
+
             catch
             {
                 Console.WriteLine("Exception occured while computing ValidPalindrome()");
             }
 
             return false;
+        }
+
+        public static int isPalindrome(string s)
+        {
+            int pal = 0;
+            int x = 0, y = s.Length - 1;
+            while (x != y)
+            {
+                if (s[x] == s[y])
+                {
+                    x++;
+                    y--;
+                    if (x > y)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    pal = 1;
+                    break;
+                }
+            }
+            return pal;
         }
 
         public static int getMax(int[] arr, int n)
