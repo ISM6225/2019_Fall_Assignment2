@@ -8,18 +8,19 @@ namespace _2019_Fall_Assignment2
     {
         public static void Main(string[] args)
         {
-            int target = 5;
+            int target = 2;
             int[] nums = { 1, 3, 5, 6 };
             Console.WriteLine("Position to insert {0} is = {1}\n", target, SearchInsert(nums, target));
 
-            int[] nums1 = { 2, 5, 5, 2 };
-            int[] nums2 = { 5,5 };
+            int[] nums1 = { 9, 4, 9, 8, 4 };
+            int[] nums2 = { 4, 9, 5 };
             int[] intersect = Intersect(nums1, nums2);
             Console.WriteLine("Intersection of two arrays is: ");
             DisplayArray(intersect);
             Console.WriteLine("\n");
 
-            int[] A = { 5, 7, 3, 9, 4, 9, 8, 3, 1 };
+            //int[] A = { 5, 7, 3, 9, 4, 9, 8, 3, 1 };
+            int[] A = { 9, 9, 8, 8 };
             Console.WriteLine("Largest integer occuring once = {0}\n", LargestUniqueNumber(A));
 
             string keyboard = "abcdefghijklmnopqrstuvwxyz";
@@ -32,7 +33,8 @@ namespace _2019_Fall_Assignment2
             Display2DArray(flipAndInvertedImage);
             Console.Write("\n");
 
-            int[,] intervals = { { 0, 30 }, { 5, 10 }, { 15, 20 } };
+            //int[,] intervals = { { 0, 30 }, { 5, 10 }, { 15, 20 } };
+            int[,] intervals = { { 7, 10 }, { 2, 4 } };
             int minMeetingRooms = MinMeetingRooms(intervals);
             Console.WriteLine("Minimum meeting rooms needed = {0}\n", minMeetingRooms);
 
@@ -88,7 +90,7 @@ namespace _2019_Fall_Assignment2
                 }
                 else
                 {
-                    while (start < end)
+                    while (start <= end)
                     {
                         int val = nums[index];
 
@@ -141,8 +143,8 @@ namespace _2019_Fall_Assignment2
                     arrayLength = nums1.Length;
                 }
 
+                Dictionary<int, int> outdic = new Dictionary<int, int>();
 
-                int[] output = new int[arrayLength];
 
                 for (int i = 0; i < nums1.Length; i++)
                 {
@@ -158,11 +160,15 @@ namespace _2019_Fall_Assignment2
                 {
                     if (n2.ContainsValue(item.Value) && index < arrayLength)
                     {
-                        output[index] = item.Value;
-                        n2.Remove(item.Key);
+                        outdic.Add(index, item.Value);
+                        var rem = n2.First(kvp => kvp.Value == item.Value);
+                        n2.Remove(rem.Key);
                         ++index;
                     }
                 }
+                int[] output = new int[outdic.Count];
+
+                outdic.Values.CopyTo(output, 0);
 
                 return output;
             }
@@ -211,20 +217,18 @@ namespace _2019_Fall_Assignment2
                 Dictionary<char, int> dictionary = new Dictionary<char, int>();
                 char[] Arraykey = keyboard.ToCharArray();
                 char[] Arrayword = word.ToCharArray();
-                int value, time;
+                int time;
+
                 //we run the for loop and select the first element
                 for (int i = 0; i < Arraykey.Length; i++)
-                {   //condition to check if there is no common number in the array
-                    if (!dictionary.TryGetValue(Arraykey[i], out value))
-                    {
-                        dictionary.Add(Arraykey[i], i);
-                    }
+                {
+                    dictionary.Add(Arraykey[i], i); // Add keyboard characters to dictionary.
                 }
 
                 time = dictionary[Arrayword[0]];
                 for (int i = 0; i < Arrayword.Length - 1; i++)
                 {
-                    time =+ Math.Abs(dictionary[Arrayword[i]] - dictionary[Arrayword[i + 1]]);
+                    time = time + Math.Abs(dictionary[Arrayword[i]] - dictionary[Arrayword[i + 1]]);
                 }
                 return time;
             }
@@ -272,7 +276,9 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                int n = intervals.Length / 2;
+                //Console.WriteLine(intervals.GetLength(0));
+                //int n = intervals.Length / 2;
+                int n = intervals.GetLength(0);
                 int[] start = new int[n];
                 int[] end = new int[n];
 
@@ -303,7 +309,7 @@ namespace _2019_Fall_Assignment2
                     // If next meeting in sorted order  
                     // is started, increment count 
                     // of room needed 
-                    if (start[x] <= end[y])
+                    if (start[x] < end[y])
                     {
                         room_needed++;
                         x++;
@@ -335,14 +341,54 @@ namespace _2019_Fall_Assignment2
         {
             try
             {
-                for (int i = 0; i < A.Length; i++)
-                {
-                    A[i] *= A[i];
-                }
-                //to sort an array with O(N) we will use radix sort 
-                radixsort(A, A.Length);
 
-                return A;
+                int arrLen = A.Length;
+                int[] square = new int[arrLen];
+
+
+                // Divides sorted array to negative and positive part.
+                int k = 0;
+                for (k = 0; k < arrLen; k++)
+                {
+                    if (A[k] >= 0)
+                        break;
+                }
+
+                //We iterate through negative half reverse order.
+                int i = k - 1; // first index of negative part of array.
+                int j = k; // first index of positive part of array.
+                int ind = 0; // Initial index of temp array  
+
+
+                while (i >= 0 && j < arrLen)
+                {
+                    if (A[i] * A[i] < A[j] * A[j])
+                    {
+                        square[ind] = A[i] * A[i];
+                        i--;
+                    }
+                    else
+                    {
+                        square[ind] = A[j] * A[j];
+                        j++;
+                    }
+                    ind++;
+                }
+
+                while (i >= 0)
+                {
+                    square[ind++] = A[i] * A[i];
+                    i--;
+                }
+                while (j < arrLen)
+                {
+                    square[ind++] = A[j] * A[j];
+                    j++;
+                }
+
+                return square;
+
+                
 
             }
             catch
